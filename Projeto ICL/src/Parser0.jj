@@ -1,0 +1,73 @@
+PARSER_BEGIN(Parser0)
+import AST.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Parser0 { }
+PARSER_END(Parser0)
+SKIP :{" "| "\t"| "\r"|"\n"}
+TOKEN :{<NEW : "new">  |  <ASSIGN : ":=">  |  <DESREF : "!">  |  <IF : "if">  |  <THEN : "then">
+  |  <ELSE : "else">  |  <WHILE : "while">  |  <DO : "do">  |  <PRINT : "print">  |  <TRUE : "true">
+  |  <FALSE : "false">  |  <AND : "&&">  |  <OR: "||">  |  <EQ : "==">  |  <GET : ">=">  |  <LET : "<=">
+  |  <GT : ">">  |  <LT : "<">  |  <NEG : "~">  |  <DEF : "def">  |  <IN : "in">  |  <END : "end">
+  |  <EQ_DEF : "=">  |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >  |  < Num: (["0"-"9"]) + >
+  |  < PLUS : "+" >  |  < MINUS : "-">  |  < MUL : "*">  |  < DIV : "/">  |  < LPAR : "(" >  |  < RPAR : ")" >
+  |  < EL: ";;" >  |  <SEQ: ";">}
+ASTNode Start() :
+{ASTNode t1;}
+{   t1 = Exp() <EL>
+	{ return t1; }}
+Token Relop():
+{Token t;}
+{    t = <EQ> | t = <GT> | t = <GET> | t = <LT> | t = <LET>
+             {return t;}}
+ASTNode Exp() :
+{ASTNode t1,t2;Token tok;}
+{     t1 = Term() ( ( tok=<PLUS> | tok=<MINUS> ) t2=Term()
+                 { if (tok.kind == PLUS) t1 = new ASTAdd(t1,t2);
+                   else  t1 = new ASTSub(t1,t2); }) *
+     { return t1; }}
+
+ASTNode Term() :
+{ASTNode t1,t2;Token tok;}
+{     t1=Fact() ( ( tok = <MUL> | tok = <DIV> ) t2=Fact()
+                     { if (tok.kind == MUL)
+                              t1 = new ASTMult(t1,t2);
+                        else  t1 = new ASTDiv(t1,t2);   } ) *
+     { return t1; }  }
+ASTNode BoolMult() :
+{ ASTNode t1, t2;}
+{    t1 = BoolRel() ("&&" t2 = BoolRel()
+     {t1 = new ASTAnd(t1, t2);})*
+     {return t1;} }
+
+ASTNode BoolAdd() :
+{ ASTNode t1, t2;}
+{  t1 = BoolMult() (<OR> t2 = BoolMult() {t1 = new ASTOr(t1, t2);})*
+  {return t1;}}
+ASTNode BoolRel() :
+{ ASTNode t1, t2; Token tok;}
+{  t1 = Exp() (tok = Relop() t2 = Exp() )?
+  {   if(tok != null ){
+            return new ASTRelationOperands(t1,tok.image, t2);
+        } else {
+            return t1;
+        }}}
+ASTNode Fact() :
+{ ASTNode t1; ASTNode e; Token tok;}
+{   (tok=<Num> { t1 = new ASTNum(Integer.parseInt(tok.image)); }
+   | tok = <Id> { t1 = new ASTId(tok.image);}
+   | tok = <TRUE> { t1 = new ASTBoolean(true);}
+   | tok = <FALSE> { t1 = new ASTBoolean(false);}
+   | <LPAR> t1=BoolAdd() <RPAR>
+   | <NEG> t1 = Fact()  { t1 = new ASTNegation(t1);}
+   | tok = <MINUS> t1 =Fact() {t1 = new ASTUMinus(t1);}
+
+   | tok = <DEF> { Token n;
+                   Map<String, ASTNode> inits = new HashMap<String, ASTNode>();
+                   ASTNode t;}
+                (n=<Id> <EQ_DEF> e = Exp(){inits.put(n.image, e);})+
+            <IN>
+                t = Exp()
+            <END> {return new ASTDef(t, inits);})
+  { return t1; }  }

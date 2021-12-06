@@ -1,0 +1,28 @@
+javacc Parser0.jj
+javac Parser0.java
+javac ICLInterpreter.java
+java ICLInterpreter
+
+java Parser0
+
+java -jar "C:\jasmin-2.4\jasmin.jar" Main.j
+java Main
+
+
+def x = 2 y= x+2 in def z=3 in def y=x+1 in x+y+z end end end;;
+=8
+def x = 2 in def y = def x=x+1 in x+x end in x*y end end;;
+=12
+
+
+def
+x=2
+y=3
+in
+    def
+        k=x+y
+    in
+        x+y+k
+    end
+end;;
+=10
