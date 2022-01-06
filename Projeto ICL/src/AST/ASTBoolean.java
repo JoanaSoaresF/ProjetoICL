@@ -4,10 +4,11 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import types.IType;
 import values.IValue;
 import values.VBoolean;
 
-public class ASTBoolean  implements ASTNode{
+public class ASTBoolean implements ASTNode {
 
     boolean value;
 
@@ -24,5 +25,11 @@ public class ASTBoolean  implements ASTNode{
     public void compile(CodeBlock c, Environment<Coordinates> e) {
         //TODO
 
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        //TODO
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import types.IType;
 import values.IValue;
 import values.VInteger;
 
@@ -34,6 +35,12 @@ public class ASTAdd implements ASTNode {
         lhs.compile(c, e);
         rhs.compile(c, e);
         c.emit("iadd");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        //TODO
+        return null;
     }
 }
 

@@ -6,34 +6,28 @@ import dataStrucrures.Environment;
 import exceptions.InterpreterError;
 import types.IType;
 import values.IValue;
-import values.VMemoryCell;
+import values.VBoolean;
 
-public class ASTAssign implements ASTNode {
+public class ASTWhile implements ASTNode{
 
-    ASTNode left, right;
-
-    public ASTAssign(ASTNode left, ASTNode right) {
-        this.left = left;
-        this.right = right;
-    }
-
+    ASTNode condition, body;
     @Override
     public IValue eval(Environment<IValue> e) throws InterpreterError {
-        //TODO - memória?
-        IValue l = left.eval(e);
-        if (l instanceof VMemoryCell) {
-            IValue r = right.eval(e);
-            ((VMemoryCell) l).set(r);
-            return r;
-
+        IValue c = condition.eval(e);
+        if(c instanceof VBoolean){
+            while (((VBoolean) c).getValue()){
+                body.eval(e);
+                c = condition.eval(e);
+            }
+            return new VBoolean(false);
         }
-        throw new InterpreterError("Illegal types to := operator");
+        throw new InterpreterError("While condition malformed");
+
     }
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e) {
         //TODO
-
     }
 
     @Override

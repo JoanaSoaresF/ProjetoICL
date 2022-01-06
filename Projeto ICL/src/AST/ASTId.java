@@ -3,6 +3,7 @@ package AST;
 import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
+import types.IType;
 import values.IValue;
 
 import static AST.ASTDef.FIELD_NAME;
@@ -38,6 +39,12 @@ public class ASTId implements ASTNode {
 //        if(depth<e.depth())
 //            c.emit(getFieldParent(depth));
         c.emit(getField(coords));
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        //TODO
+        return null;
     }
 
     private String getFieldParent(int depth) {

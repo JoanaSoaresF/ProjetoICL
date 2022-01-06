@@ -5,6 +5,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import types.IType;
 import values.IValue;
 
 import java.io.FileNotFoundException;
@@ -53,7 +54,7 @@ public class ASTDef implements ASTNode {
              * sipush 2
              * putfield frame_0/v0 I
              */
-            String frame  = String.format(FRAME_NAME, newEnv.depth());
+            String frame = String.format(FRAME_NAME, newEnv.depth());
             String field = String.format(FIELD_NAME, slot);
             String newID = entry.getKey();
             //To use the associations define previously in the same definition
@@ -62,7 +63,7 @@ public class ASTDef implements ASTNode {
             Coordinates coords = new Coordinates(newEnv.depth(), slot);
             newEnv.assoc(newID, coords);
             newSlot(slot, currentFrame, c);
-            c.emit(String.format("putfield %s/%s I", frame, field ));
+            c.emit(String.format("putfield %s/%s I", frame, field));
             slot++;
 
         }
@@ -82,12 +83,19 @@ public class ASTDef implements ASTNode {
 
 
     }
-    private String getFieldParent(int frameDepth){
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        //TODO
+        return null;
+    }
+
+    private String getFieldParent(int frameDepth) {
         String frame = String.format(FRAME_NAME, frameDepth);
-        String other= (frameDepth!=0)? String.format(FRAME_NAME, frameDepth - 1) : "java" +
+        String other = (frameDepth != 0) ? String.format(FRAME_NAME, frameDepth - 1) : "java" +
                 "/lang" +
                 "/Object";
-        return String.format("getfield %s/sl L%s;",frame, other);
+        return String.format("getfield %s/sl L%s;", frame, other);
     }
 
 
@@ -138,6 +146,7 @@ public class ASTDef implements ASTNode {
             currentFrame.close();
         }
     }
+
     /**
      * new frame_0
      * dup
@@ -147,22 +156,20 @@ public class ASTDef implements ASTNode {
      * putfield frame_0/sl Ljava/lang/Object;
      * astore 4
      */
-    private void constructCodeBlock(CodeBlock c, int frameDepth){
-        String frame  = String.format(FRAME_NAME, frameDepth);
-        String parent = String.format(FRAME_NAME, frameDepth-1);
-        c.emit("new "+frame);
+    private void constructCodeBlock(CodeBlock c, int frameDepth) {
+        String frame = String.format(FRAME_NAME, frameDepth);
+        String parent = String.format(FRAME_NAME, frameDepth - 1);
+        c.emit("new " + frame);
         c.emit("dup");
         c.emit(String.format("invokespecial %s/<init>()V", frame));
         c.emit("dup");
         c.emit("aload 4");
-        if(frameDepth==0){
-            c.emit(String.format("putfield %s/sl L%s;",frame, "java/lang/Object"));
+        if (frameDepth == 0) {
+            c.emit(String.format("putfield %s/sl L%s;", frame, "java/lang/Object"));
         } else {
-            c.emit(String.format("putfield %s/sl L%s;",frame, parent));
+            c.emit(String.format("putfield %s/sl L%s;", frame, parent));
         }
         c.emit("astore 4");
-
-
 
     }
 }

@@ -8,32 +8,23 @@ import types.IType;
 import values.IValue;
 import values.VMemoryCell;
 
-public class ASTAssign implements ASTNode {
+public class ASTNew implements ASTNode {
 
-    ASTNode left, right;
+    ASTNode arg;
 
-    public ASTAssign(ASTNode left, ASTNode right) {
-        this.left = left;
-        this.right = right;
+    public ASTNew(ASTNode arg) {
+        this.arg = arg;
     }
 
     @Override
     public IValue eval(Environment<IValue> e) throws InterpreterError {
-        //TODO - memória?
-        IValue l = left.eval(e);
-        if (l instanceof VMemoryCell) {
-            IValue r = right.eval(e);
-            ((VMemoryCell) l).set(r);
-            return r;
-
-        }
-        throw new InterpreterError("Illegal types to := operator");
+        IValue v = arg.eval(e);
+        return new VMemoryCell(v);
     }
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e) {
         //TODO
-
     }
 
     @Override

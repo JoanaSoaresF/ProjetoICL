@@ -8,32 +8,31 @@ import types.IType;
 import values.IValue;
 import values.VBoolean;
 
-public class ASTOr implements ASTNode {
-    private ASTNode left, right;
+public class ASTIf implements ASTNode{
+    ASTNode condition, thenBody, elseBody;
 
-
-    public ASTOr(ASTNode left, ASTNode right) {
-        this.left = left;
-        this.right = right;
+    public ASTIf(ASTNode condition, ASTNode thenBody, ASTNode elseBody) {
+        this.condition = condition;
+        this.thenBody = thenBody;
+        this.elseBody = elseBody;
     }
 
     @Override
     public IValue eval(Environment<IValue> e) throws InterpreterError {
-        IValue l = left.eval(e);
-        if (l instanceof VBoolean) {
-            IValue r = right.eval(e);
-            if (r instanceof VBoolean) {
-                boolean result = ((VBoolean) l).getValue() || ((VBoolean) r).getValue();
-                return new VBoolean(result);
+        IValue c = condition.eval(e);
+        if(c instanceof VBoolean){
+            if(((VBoolean) c).getValue()){
+                return thenBody.eval(e);
+            }else{
+                return elseBody.eval(e);
             }
         }
-        throw new InterpreterError("Illegal types to || operator");
+        throw new InterpreterError("If statement malformed");
     }
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e) {
         //TODO
-
     }
 
     @Override

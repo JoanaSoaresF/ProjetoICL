@@ -6,28 +6,20 @@ import dataStrucrures.Environment;
 import exceptions.InterpreterError;
 import types.IType;
 import values.IValue;
-import values.VMemoryCell;
 
-public class ASTAssign implements ASTNode {
+public class ASTSeq implements ASTNode {
 
-    ASTNode left, right;
+    ASTNode lhs, rhs;
 
-    public ASTAssign(ASTNode left, ASTNode right) {
-        this.left = left;
-        this.right = right;
+    public ASTSeq(ASTNode t1, ASTNode t2) {
+        lhs = t1;
+        rhs = t2;
     }
 
     @Override
     public IValue eval(Environment<IValue> e) throws InterpreterError {
-        //TODO - memória?
-        IValue l = left.eval(e);
-        if (l instanceof VMemoryCell) {
-            IValue r = right.eval(e);
-            ((VMemoryCell) l).set(r);
-            return r;
-
-        }
-        throw new InterpreterError("Illegal types to := operator");
+        lhs.eval(e);
+        return rhs.eval(e);
     }
 
     @Override
@@ -41,4 +33,5 @@ public class ASTAssign implements ASTNode {
         //TODO
         return null;
     }
+
 }

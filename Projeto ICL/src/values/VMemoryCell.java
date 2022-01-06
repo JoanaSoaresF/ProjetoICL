@@ -11,7 +11,7 @@ public class VMemoryCell implements IValue {
     //TODO
     @Override
     public void show() {
-
+        System.out.println(v);
     }
 
     public IValue getValue(){

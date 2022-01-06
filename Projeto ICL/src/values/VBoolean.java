@@ -9,7 +9,7 @@ public class VBoolean implements IValue {
 
     @Override
     public void show() {
-
+        System.out.println(v);
     }
 
     public boolean getValue(){

@@ -4,6 +4,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import types.IType;
 import values.IValue;
 import values.VInteger;
 
@@ -38,6 +39,12 @@ public class ASTDiv implements ASTNode {
         lhs.compile(c, e);
         rhs.compile(c, e);
         c.emit("idiv");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        //TODO
+        return null;
     }
 
 

@@ -5,6 +5,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import types.IType;
 import values.IValue;
 import values.VInteger;
 
@@ -29,6 +30,12 @@ public class ASTUMinus implements ASTNode {
     public void compile(CodeBlock c, Environment<Coordinates> e) {
         lhs.compile(c, e);
         c.emit("ineg");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        //TODO
+        return null;
     }
 
 
