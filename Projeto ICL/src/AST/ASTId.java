@@ -3,6 +3,7 @@ package AST;
 import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
+import exceptions.TypeErrorException;
 import types.IType;
 import values.IValue;
 
@@ -42,9 +43,8 @@ public class ASTId implements ASTNode {
     }
 
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        return e.find(id);
     }
 
     private String getFieldParent(int depth) {

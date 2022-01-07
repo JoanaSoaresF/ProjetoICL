@@ -28,7 +28,6 @@ public class ASTPrint implements ASTNode {
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        //TODO
         return null;
     }
 }

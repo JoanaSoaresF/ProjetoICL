@@ -4,7 +4,9 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
+import types.TypeRef;
 import values.IValue;
 import values.VMemoryCell;
 
@@ -28,8 +30,8 @@ public class ASTNew implements ASTNode {
     }
 
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        IType t = arg.typecheck(e);
+        return new TypeRef(t);
     }
 }

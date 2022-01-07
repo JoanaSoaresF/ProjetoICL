@@ -4,7 +4,9 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
+import types.TypeRef;
 import values.IValue;
 import values.VMemoryCell;
 
@@ -31,8 +33,12 @@ public class ASTDeref implements ASTNode {
     }
 
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        IType t1 = value.typecheck(e);
+        if (t1 instanceof TypeRef) {
+            IType refType = ((TypeRef) t1).getType();
+            return refType;
+        }
+        throw new TypeErrorException("Illegal argument to ! operator");
     }
 }

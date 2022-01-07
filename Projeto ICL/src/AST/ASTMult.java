@@ -4,7 +4,9 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
+import types.TypeInt;
 import values.IValue;
 import values.VInteger;
 
@@ -40,9 +42,15 @@ public class ASTMult implements ASTNode {
     }
 
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        IType v1 = lhs.typecheck(e);
+        if (v1 instanceof TypeInt) {
+            IType v2 = rhs.typecheck(e);
+            if (v2 instanceof TypeInt) {
+                return v1;
+            }
+        }
+        throw new TypeErrorException("Illegal arguments to * operator");
     }
 
 }

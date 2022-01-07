@@ -4,6 +4,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
 import values.IValue;
 
@@ -29,9 +30,10 @@ public class ASTSeq implements ASTNode {
     }
 
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        IType t1 = lhs.typecheck(e);
+        IType t2 = rhs.typecheck(e);
+        return t2;
     }
 
 }

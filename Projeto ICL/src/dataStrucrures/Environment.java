@@ -3,12 +3,11 @@ package dataStrucrures;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Environment<IValue> {
+public class Environment<X> {
 
-    public Environment<IValue> parent;
+    private final Map<String, X> currentEnv;
     private final int depth;
-
-    private final Map<String, IValue> currentEnv;
+    public Environment<X> parent;
 
     public Environment() {
         parent = null;
@@ -16,10 +15,17 @@ public class Environment<IValue> {
         depth = -1;
     }
 
-    private Environment(Environment<IValue> parent) {
+    private Environment(Environment<X> parent) {
         this.parent = parent;
         currentEnv = new HashMap<>();
         depth = parent.depth() + 1;
+    }
+
+    /**
+     * @return the depth of the 'stack'
+     */
+    public int depth() {
+        return depth;
     }
 
     /**
@@ -27,8 +33,8 @@ public class Environment<IValue> {
      *
      * @return the lever created
      */
-    public Environment<IValue> beginScope() {
-        return new Environment<IValue>(this);
+    public Environment<X> beginScope() {
+        return new Environment<X>(this);
     }
 
     /**
@@ -36,7 +42,7 @@ public class Environment<IValue> {
      *
      * @return the level popped
      */
-    public Environment<IValue> endScope() {
+    public Environment<X> endScope() {
         return parent;
     }
 
@@ -46,11 +52,15 @@ public class Environment<IValue> {
      * @param id  - identifier
      * @param val value to associate to the identifier
      */
-    public void assoc(String id, IValue val) {
+    public void assoc(String id, X val) {
         if (currentEnv.containsKey(id)) {
-            System.out.println("IDDeclaredTwiceException "+id);
+            System.out.println("IDDeclaredTwiceException " + id);
         }
         currentEnv.put(id, val);
+    }
+
+    public boolean hasParent() {
+        return parent != null;
     }
 
     /**
@@ -59,8 +69,8 @@ public class Environment<IValue> {
      * @param id id to find
      * @return the value associated with the id
      */
-    public IValue find(String id) {
-        IValue value = currentEnv.get(id);
+    public X find(String id) {
+        X value = currentEnv.get(id);
 
         if (value == null && hasParent()) {
             value = parent.find(id);
@@ -73,20 +83,7 @@ public class Environment<IValue> {
         return value;
     }
 
-    public boolean hasParent() {
-        return parent != null;
-    }
-
-    /**
-     *
-     * @return the depth of the 'stack'
-     */
-    public int depth(){
-        return depth;
-    }
-
-
-    public Environment<IValue> getParent() {
+    public Environment<X> getParent() {
         return parent;
     }
 }

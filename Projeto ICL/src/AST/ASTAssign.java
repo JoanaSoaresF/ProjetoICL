@@ -4,7 +4,9 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
+import types.TypeRef;
 import values.IValue;
 import values.VMemoryCell;
 
@@ -37,8 +39,11 @@ public class ASTAssign implements ASTNode {
     }
 
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        IType v1 = left.typecheck(e);
+        if (v1 instanceof TypeRef) {
+            return v1;
+        }
+        throw new TypeErrorException("Illegal arguments to := operator");
     }
 }

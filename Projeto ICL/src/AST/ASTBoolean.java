@@ -5,6 +5,7 @@ import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
 import types.IType;
+import types.TypeBool;
 import values.IValue;
 import values.VBoolean;
 
@@ -29,7 +30,6 @@ public class ASTBoolean implements ASTNode {
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+        return new TypeBool();
     }
 }

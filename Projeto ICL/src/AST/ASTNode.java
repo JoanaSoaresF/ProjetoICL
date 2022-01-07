@@ -1,10 +1,10 @@
 package AST;
 
 import dataStrucrures.CodeBlock;
-
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
 import values.IValue;
 
@@ -14,7 +14,7 @@ public interface ASTNode {
 
     void compile(CodeBlock c, Environment<Coordinates> e);
 
-    IType typecheck(Environment<IType> e);
+    IType typecheck(Environment<IType> e) throws TypeErrorException;
 
 
 }

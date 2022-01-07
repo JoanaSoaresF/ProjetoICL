@@ -4,7 +4,9 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
+import types.TypeBool;
 import values.IValue;
 import values.VBoolean;
 
@@ -37,8 +39,12 @@ public class ASTWhile implements ASTNode {
     }
 
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        IType t1 = condition.typecheck(e);
+        if (t1 instanceof TypeBool) {
+            IType t2 = body.typecheck(e);
+            return new TypeBool();
+        }
+        throw new TypeErrorException("While operand with wrog arguments types");
     }
 }

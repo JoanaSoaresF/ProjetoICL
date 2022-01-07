@@ -5,6 +5,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
 import values.IValue;
 
@@ -84,10 +85,18 @@ public class ASTDef implements ASTNode {
 
     }
 
+
     @Override
-    public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+
+        Environment<IType> envLocal = e.beginScope();
+        for (Map.Entry<String, ASTNode> entry : bindings.entrySet()) {
+            IType t1 = entry.getValue().typecheck(e);
+            envLocal.assoc(entry.getKey(), t1);
+        }
+        IType t2 = body.typecheck(envLocal);
+        e.endScope();
+        return t2;
     }
 
     private String getFieldParent(int frameDepth) {

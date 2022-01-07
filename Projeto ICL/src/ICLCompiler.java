@@ -2,6 +2,7 @@ import AST.ASTNode;
 import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
+import types.IType;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,10 +23,12 @@ public class ICLCompiler {
         System.out.println(filename);
         CodeBlock code = new CodeBlock();
         Environment<Coordinates>  env = new Environment<>();
+        Environment<IType> envTypes = new Environment<>();
 
         try {
             System.out.printf("File %s generated\n", filename+".j");
             ASTNode ast = parser.Start();
+            ast.typecheck(envTypes);
             ast.compile(code, env);
             code.dump(filename);
 

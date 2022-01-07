@@ -4,6 +4,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import types.IType;
+import types.TypeInt;
 import values.IValue;
 import values.VInteger;
 
@@ -30,8 +31,7 @@ public class ASTNum implements ASTNode {
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        //TODO
-        return null;
+        return new TypeInt();
     }
 
 

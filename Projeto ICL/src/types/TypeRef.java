@@ -11,4 +11,8 @@ public class TypeRef implements IType{
     public void show() {
 
     }
+
+    public IType getType(){
+        return value;
+    }
 }
