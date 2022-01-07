@@ -42,6 +42,12 @@ public class ASTRelationOperands implements ASTNode {
             public boolean apply(int a, int b) {
                 return a < b;
             }
+        },
+        DIFFERENT_THAN("~=") {
+            @Override
+            public boolean apply(int a, int b) {
+                return a != b;
+            }
         };
 
         private final String op;

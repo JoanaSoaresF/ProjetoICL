@@ -8,14 +8,20 @@ import types.IType;
 import values.IValue;
 import values.VBoolean;
 
-public class ASTWhile implements ASTNode{
+public class ASTWhile implements ASTNode {
 
     ASTNode condition, body;
+
+    public ASTWhile(ASTNode condition, ASTNode body) {
+        this.condition = condition;
+        this.body = body;
+    }
+
     @Override
     public IValue eval(Environment<IValue> e) throws InterpreterError {
         IValue c = condition.eval(e);
-        if(c instanceof VBoolean){
-            while (((VBoolean) c).getValue()){
+        if (c instanceof VBoolean) {
+            while (((VBoolean) c).getValue()) {
                 body.eval(e);
                 c = condition.eval(e);
             }
