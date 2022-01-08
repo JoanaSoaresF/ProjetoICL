@@ -10,10 +10,13 @@ import java.util.Scanner;
 
 public class CodeBlock {
     LinkedList<String> code;
+    int label;
 
 
     public CodeBlock() {
-      code = new LinkedList<>();
+
+        code = new LinkedList<>();
+        label = 0;
     }
 
     public void emit(String opcode) {
@@ -24,15 +27,16 @@ public class CodeBlock {
         //Runtime class para executar o comando do jasmin
 
         try {
-            FileOutputStream fout = new FileOutputStream(filename+".j", false);
+            FileOutputStream fout = new FileOutputStream(String.format("../files/%s.j",
+                    filename), false);
             PrintStream f = new PrintStream(fout);
-            f.println(readFile("../start"));
+            f.println(readFile("../../start"));
             f.println("aconst_null");
             f.println("astore 4");
             for (String instruction : code) {
                 f.println(instruction);
             }
-            f.println(readFile("../end"));
+            f.println(readFile("../../end"));
             f.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -57,12 +61,10 @@ public class CodeBlock {
         return output.toString();
     }
 
-    /**
-     * creates unique symbols
-     * @return creates unique symbols
-     */
-    public String genSymb(){
-        return ""; //TODO
+    public String newLabel(){
+        String l = "L"+label;
+        label++;
+        return l;
     }
 
 }

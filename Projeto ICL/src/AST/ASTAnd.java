@@ -34,8 +34,10 @@ public class ASTAnd implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        //TODO
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
+        left.compile(c, e, envTypes);
+        right.compile(c, e, envTypes);
+        c.emit("iand");
 
     }
 

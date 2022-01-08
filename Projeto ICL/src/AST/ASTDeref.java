@@ -28,8 +28,10 @@ public class ASTDeref implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        //TODO
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
+        IType ref = value.typecheck(t);
+        value.compile(c, e, t);
+        c.emit(String.format("getfield %s/v %s", ref.show(), ((TypeRef) ref).getType().show()));
     }
 
     @Override

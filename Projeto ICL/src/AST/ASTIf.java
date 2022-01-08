@@ -33,8 +33,17 @@ public class ASTIf implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        //TODO
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
+        String l1 = c.newLabel();
+        String l2 = c.newLabel();
+
+        condition.compile(c, e, t);
+        c.emit("ifeq " + l1);
+        thenBody.compile(c, e, t);
+        c.emit("goto " + l2);
+        c.emit(l1 + ":");
+        elseBody.compile(c, e, t);
+        c.emit(l2 + ":");
     }
 
     @Override

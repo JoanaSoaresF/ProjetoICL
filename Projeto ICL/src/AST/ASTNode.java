@@ -12,7 +12,7 @@ public interface ASTNode {
 
     IValue eval(Environment<IValue> e) throws InterpreterError;
 
-    void compile(CodeBlock c, Environment<Coordinates> e);
+    void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException;
 
     IType typecheck(Environment<IType> e) throws TypeErrorException;
 

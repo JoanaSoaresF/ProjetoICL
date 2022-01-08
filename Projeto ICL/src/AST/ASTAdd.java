@@ -33,9 +33,9 @@ public class ASTAdd implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        lhs.compile(c, e);
-        rhs.compile(c, e);
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
+        lhs.compile(c, e, envTypes);
+        rhs.compile(c, e, envTypes);
         c.emit("iadd");
     }
 

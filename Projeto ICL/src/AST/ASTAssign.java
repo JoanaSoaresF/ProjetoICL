@@ -33,8 +33,13 @@ public class ASTAssign implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        //TODO
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
+        IType type = left.typecheck(envTypes);
+        left.compile(c, e, envTypes);
+        right.compile(c, e, envTypes);
+        String typeInRef = ((TypeRef) type).getType().show();
+        String t = typeInRef.equals("I")?"I":String.format("L%s;", typeInRef);
+        c.emit(String.format("putfield %s/v %s", type.show(), t));
 
     }
 

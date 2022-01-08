@@ -25,7 +25,7 @@ public class ASTId implements ASTNode {
 
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) {
         /**
          * aload 4
          * getfield frame_1/sl Lframe_0;
@@ -39,7 +39,9 @@ public class ASTId implements ASTNode {
         }
 //        if(depth<e.depth())
 //            c.emit(getFieldParent(depth));
-        c.emit(getField(coords));
+        IType type = t.find(id);
+        String field = getField(coords, type.show());
+        c.emit(field);
     }
 
     @Override
@@ -53,10 +55,11 @@ public class ASTId implements ASTNode {
         return String.format("getfield %s/sl L%s;", frame, parent);
     }
 
-    private String getField(Coordinates coords) {
+    private String getField(Coordinates coords, String type) {
 
         String frame = String.format(FRAME_NAME, coords.getDepth());
         String slot = String.format(FIELD_NAME, coords.getSlot());
-        return String.format("getfield %s/%s I", frame, slot);
+        String t = type.equals("I")?"I":String.format("L%s;", type);
+        return String.format("getfield %s/%s %s", frame, slot, t);
     }
 }

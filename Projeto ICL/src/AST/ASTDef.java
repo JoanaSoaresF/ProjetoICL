@@ -43,9 +43,10 @@ public class ASTDef implements ASTNode {
 
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
 
         Environment<Coordinates> newEnv = e.beginScope();
+        Environment<IType> types = t.beginScope();
         int slot = 0;
         PrintStream currentFrame = createFrameFile(newEnv.depth());
         constructCodeBlock(c, newEnv.depth());
@@ -60,15 +61,21 @@ public class ASTDef implements ASTNode {
             String newID = entry.getKey();
             //To use the associations define previously in the same definition
             c.emit("aload 4");
-            entry.getValue().compile(c, newEnv);
+            entry.getValue().compile(c, newEnv, t);
+            //add coordinates to env
             Coordinates coords = new Coordinates(newEnv.depth(), slot);
             newEnv.assoc(newID, coords);
-            newSlot(slot, currentFrame, c);
-            c.emit(String.format("putfield %s/%s I", frame, field));
+            //add types to env
+            IType type = entry.getValue().typecheck(t);
+            types.assoc(newID, type);
+
+            newSlot(slot, currentFrame, c, type.show());
+            String typeL = type.show().equals("I")?"I":String.format("L%s;", type.show());
+            c.emit(String.format("putfield %s/%s %s", frame, field, typeL));
             slot++;
 
         }
-        body.compile(c, newEnv);
+        body.compile(c, newEnv, types);
         newEnv.endScope();
         endFrame(currentFrame);
         /**
@@ -118,7 +125,8 @@ public class ASTDef implements ASTNode {
         String frameName = String.format(FRAME_NAME, frame);
         PrintStream currentFrame = null;
         try {
-            FileOutputStream fout = new FileOutputStream(frameName + ".j", false);
+            FileOutputStream fout = new FileOutputStream(String.format("..\\files\\%s.j",
+                    frameName), false);
             currentFrame = new PrintStream(fout);
             currentFrame.println(".class " + frameName);
             currentFrame.println(".super java/lang/Object");
@@ -137,10 +145,11 @@ public class ASTDef implements ASTNode {
 
     }
 
-    public void newSlot(int slot, PrintStream currentFrame, CodeBlock c) {
+    public void newSlot(int slot, PrintStream currentFrame, CodeBlock c, String type) {
         if (currentFrame != null) {
             String field = String.format(FIELD_NAME, slot);
-            currentFrame.println(String.format(".field public %s I", field));
+            String t = type.equals("I")?"I":String.format("L%s;", type);
+            currentFrame.println(String.format(".field public %s %s", field, t));
         }
     }
 

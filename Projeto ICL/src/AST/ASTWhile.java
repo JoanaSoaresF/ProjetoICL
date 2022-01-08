@@ -34,8 +34,18 @@ public class ASTWhile implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        //TODO
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
+        String l1 = c.newLabel();
+        String l2 = c.newLabel();
+
+        c.emit(String.format("%s:", l1));
+        condition.compile(c, e, t);
+        c.emit(String.format("ifeq %s", l2));
+        body.compile(c, e, t);
+        //c.emit("pop");
+        c.emit(String.format("goto %s", l1));
+        c.emit(String.format("%s:", l2));
+
     }
 
     @Override
@@ -45,6 +55,6 @@ public class ASTWhile implements ASTNode {
             IType t2 = body.typecheck(e);
             return new TypeBool();
         }
-        throw new TypeErrorException("While operand with wrog arguments types");
+        throw new TypeErrorException("While operand with wrong arguments types");
     }
 }

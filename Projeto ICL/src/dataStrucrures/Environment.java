@@ -8,11 +8,13 @@ public class Environment<X> {
     private final Map<String, X> currentEnv;
     private final int depth;
     public Environment<X> parent;
+    private int label;
 
     public Environment() {
         parent = null;
         currentEnv = new HashMap<>();
         depth = -1;
+        label = 0;
     }
 
     private Environment(Environment<X> parent) {
@@ -85,5 +87,9 @@ public class Environment<X> {
 
     public Environment<X> getParent() {
         return parent;
+    }
+
+    public int newLabel(){
+        return label++;
     }
 }

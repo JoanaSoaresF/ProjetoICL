@@ -4,6 +4,7 @@ import dataStrucrures.CodeBlock;
 import dataStrucrures.Coordinates;
 import dataStrucrures.Environment;
 import exceptions.InterpreterError;
+import exceptions.TypeErrorException;
 import types.IType;
 import values.IValue;
 
@@ -22,8 +23,15 @@ public class ASTPrint implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        //TODO
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
+//        c.emit("getstatic java/lang/System/out Ljava/io/PrintStream;");
+        arg.compile(c, e, t);
+        c.emit("dup");
+        c.emit("getstatic java/lang/System/out Ljava/io/PrintStream;");
+        c.emit("swap");
+        c.emit("invokestatic java/lang/String/valueOf(I)Ljava/lang/String;");
+        c.emit("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+//        c.emit("return");
     }
 
     @Override

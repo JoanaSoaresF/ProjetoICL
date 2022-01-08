@@ -1,8 +1,9 @@
 package types;
 
-public class TypeBool implements IType{
+public class TypeBool implements IType {
     @Override
-    public void show() {
+    public String show() {
+        return "I";
 
     }
 }

@@ -1,8 +1,8 @@
 package types;
 
-public class TypeInt implements IType{
+public class TypeInt implements IType {
     @Override
-    public void show() {
-
+    public String show() {
+        return "I";
     }
 }

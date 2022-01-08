@@ -7,6 +7,7 @@ import exceptions.InterpreterError;
 import exceptions.TypeErrorException;
 import types.IType;
 import types.TypeBool;
+import types.TypeInt;
 import values.IValue;
 import values.VBoolean;
 import values.VInteger;
@@ -20,11 +21,21 @@ public class ASTRelationOperands implements ASTNode {
             public boolean apply(int a, int b) {
                 return a == b;
             }
+
+            @Override
+            public String compile() {
+                return "ifeq";
+            }
         },
         GREATER_EQUAL_THAN(">=") {
             @Override
             public boolean apply(int a, int b) {
                 return a >= b;
+            }
+
+            @Override
+            public String compile() {
+                return "ifge";
             }
         },
         GREATER_THAN(">") {
@@ -32,11 +43,21 @@ public class ASTRelationOperands implements ASTNode {
             public boolean apply(int a, int b) {
                 return a > b;
             }
+
+            @Override
+            public String compile() {
+                return "ifgt";
+            }
         },
         LESS_EQUAL_THAN("<=") {
             @Override
             public boolean apply(int a, int b) {
                 return a <= b;
+            }
+
+            @Override
+            public String compile() {
+                return "ifle";
             }
         },
         LESS_THAN("<") {
@@ -44,11 +65,21 @@ public class ASTRelationOperands implements ASTNode {
             public boolean apply(int a, int b) {
                 return a < b;
             }
+
+            @Override
+            public String compile() {
+                return "iflt";
+            }
         },
         DIFFERENT_THAN("~=") {
             @Override
             public boolean apply(int a, int b) {
                 return a != b;
+            }
+
+            @Override
+            public String compile() {
+                return "ifne";
             }
         };
 
@@ -59,6 +90,8 @@ public class ASTRelationOperands implements ASTNode {
         }
 
         public abstract boolean apply(int a, int b);
+
+        public abstract String compile();
 
         public String operation() {
             return op;
@@ -102,20 +135,29 @@ public class ASTRelationOperands implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        //TODO
-
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
+        String l1 = c.newLabel();
+        String l2 = c.newLabel();
+        left.compile(c, e, t);
+        right.compile(c, e, t);
+        c.emit("isub");
+        c.emit(String.format("%s %s", operation.compile(), l1));
+        c.emit("sipush 0");
+        c.emit(String.format("goto %s", l2));
+        c.emit(String.format("%s:\n sipush 1", l1));
+        c.emit(String.format("%s:", l2));
     }
 
     @Override
     public IType typecheck(Environment<IType> e) throws TypeErrorException {
         IType v1 = left.typecheck(e);
-        if (v1 instanceof TypeBool) {
+        if (v1 instanceof TypeInt) {
             IType v2 = right.typecheck(e);
-            if (v2 instanceof TypeBool) {
-                return v1;
+            if (v2 instanceof TypeInt) {
+                System.out.println("V2 type" + v2.show());
+                return new TypeBool();
             }
         }
-        throw new TypeErrorException("Illegal arguments to relational operator");
+        throw new TypeErrorException("Illegal arguments to relational operator "+v1.show());
     }
 }

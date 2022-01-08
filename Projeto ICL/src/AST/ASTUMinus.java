@@ -29,8 +29,8 @@ public class ASTUMinus implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock c, Environment<Coordinates> e) {
-        lhs.compile(c, e);
+    public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
+        lhs.compile(c, e, t);
         c.emit("ineg");
     }
 

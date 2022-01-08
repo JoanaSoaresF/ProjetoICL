@@ -19,6 +19,8 @@ SKIP :{
 
 TOKEN :{
     <NEW : "new">
+    | <FUN : "fun">
+    | <FUN_ARROW : "->">
     |  <ASSIGN : ":=">
     |  <DESREF : "!">
     |  <IF : "if">
@@ -66,22 +68,22 @@ ASTNode Start() :
 ASTNode Seq():
 { ASTNode t1, t2; }
 {
-   t1 = BoolAdd() (<SEQ> t2=BoolAdd() {t1 = new ASTSeq(t1, t2);})*
+   t1 = Assign() (<SEQ> t2=Assign() {t1 = new ASTSeq(t1, t2);})*
+   { return t1;}
+}
+
+ASTNode Assign():
+{ ASTNode t1, t2; }
+{
+   t1 = BoolAdd() (<ASSIGN> t2=BoolAdd() {t1 = new ASTAssign(t1, t2);})?
    { return t1;}
 }
 
 ASTNode BoolAdd() :
 { ASTNode t1, t2;
  Token tok;}
-{  t1 = BoolMult() ((tok = <OR> | tok = <ASSIGN>) t2 = BoolMult()
-{
-   if(tok != null && tok.kind==ASSIGN){
-       t1 =  new ASTAssign(t1, t2);
-   } else if (tok!=null && tok.kind==OR){
-       t1 = new ASTOr(t1, t2);}
-})*
-
-{return t1;}
+{ t1 = BoolMult() (tok = <OR>  t2 = BoolMult() {t1 = new ASTOr(t1, t2);})*
+    {return t1;}
 }
 
 ASTNode BoolMult() :
