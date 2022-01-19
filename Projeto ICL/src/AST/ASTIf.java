@@ -52,7 +52,7 @@ public class ASTIf implements ASTNode {
         if (t1 instanceof TypeBool) {
             IType t2 = thenBody.typecheck(e);
             IType t3 = elseBody.typecheck(e);
-            if (t2.getClass() == t3.getClass()) {
+            if (t2.getClass().equals(t3.getClass())) {
                 return t2;
             }
         }
