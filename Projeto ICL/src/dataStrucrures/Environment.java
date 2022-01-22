@@ -5,28 +5,23 @@ import java.util.Map;
 
 public class Environment<X> {
 
-    public static int frameCounter = -1;
+    public static int frameCounter = 0;
 
     private final Map<String, X> currentEnv;
     private final int depth;
     public Environment<X> parent;
-    private int label;
     private int frameId;
 
     public Environment() {
         parent = null;
         currentEnv = new HashMap<>();
         depth = -1;
-        label = 0;
-        frameId = ++frameCounter;
     }
 
     private Environment(Environment<X> parent) {
         this.parent = parent;
         currentEnv = new HashMap<>();
         depth = parent.depth() + 1;
-        frameId = ++frameCounter;
-        frameCounter++;
     }
 
     /**
@@ -35,11 +30,6 @@ public class Environment<X> {
     public int depth() {
         return depth;
     }
-
-    public String frameType() {
-        return "f" + frameId;
-    }
-
 
     /**
      * Push level
@@ -89,7 +79,6 @@ public class Environment<X> {
             value = parent.find(id);
         }
 
-
         if (value == null) {
             System.out.println("UndeclaredIdentifierException " + id);
         }
@@ -100,7 +89,11 @@ public class Environment<X> {
         return parent;
     }
 
-    public int newLabel() {
-        return label++;
+    public void setFrameId() {
+        this.frameId = frameCounter++;
+    }
+
+    public int getFrameId() {
+        return frameId;
     }
 }

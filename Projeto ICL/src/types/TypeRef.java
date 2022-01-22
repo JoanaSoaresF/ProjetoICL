@@ -4,9 +4,7 @@ public class TypeRef implements IType {
     IType value;
 
     public TypeRef(IType value) {
-
         this.value = value;
-
     }
 
     @Override

@@ -28,8 +28,6 @@ public class CodeBlock {
     }
 
     public void dump(String filename) {
-        //Runtime class para executar o comando do jasmin
-
         try {
             FileOutputStream fout = new FileOutputStream(String.format("../files/%s.j",
                     filename), false);
@@ -59,7 +57,7 @@ public class CodeBlock {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred generating file.");
             e.printStackTrace();
         }
         return output.toString();

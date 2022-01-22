@@ -25,14 +25,8 @@ public class ICLCompiler {
         try {
             ASTNode ast = parser.Start();
             ast.typecheck(envTypes);
-            System.out.println("compile:");
             ast.compile(code, env, envTypes);
             code.dump(filename);
-
-//            String cmd = "java -jar \"..\\..\\jasmin.jar\" "+filename+".j";
-//            Runtime run = Runtime. getRuntime();
-//            Process pr = run. exec(cmd);
-//            pr. waitFor();
 
         } catch (Exception e) {
             e.printStackTrace();

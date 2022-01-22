@@ -43,8 +43,8 @@ public class ASTApply implements ASTNode {
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
 
+        c.emit(";Apply compile");
         TypeClosure type = (TypeClosure) function.typecheck(envTypes);
-        System.out.println("Apply: " + function + type);
         String interfaceName = type.getInterfaceName();
         String applySignature = type.getApplySignature();
         ;

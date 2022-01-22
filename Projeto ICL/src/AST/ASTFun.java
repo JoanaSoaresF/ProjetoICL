@@ -37,11 +37,13 @@ public class ASTFun implements ASTNode {
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
 
+        c.emit(";Fun compile");
         int nClosure = c.newClosure();
         String functionName = "closure_" + nClosure;
-        String currentEnvironment = "f" + e.depth();
+        String currentEnvironment = "f" + e.getFrameId();
         Environment<Coordinates> bodyEnv = e.beginScope();
-        String functionFrame = "f" + (bodyEnv.depth());
+        bodyEnv.setFrameId();
+        String functionFrame = "f" + (bodyEnv.getFrameId());
         Environment<IType> bodyTypesEnv = envTypes.beginScope();
         // add parameters
         for (int i = 0; i < parametersTypes.size(); i++) {
@@ -150,7 +152,7 @@ public class ASTFun implements ASTNode {
                 closureFile.printf("\t%sload %d%n", paramType.loadPrefix(), i + 1);
                 closureFile.printf("\tputfield %s/x%d %s%n", functionFrame, i, typeL);
             }
-            //QUESTION isto é para que??
+            //QUESTION
             closureFile.println("\tastore 4");
 
             //Generate code for body function

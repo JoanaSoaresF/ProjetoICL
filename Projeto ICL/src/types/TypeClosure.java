@@ -58,11 +58,6 @@ public class TypeClosure implements IType {
 
     @Override
     public String show() {
-//        String paramsString = parametersTypes.stream()
-//                .map(type -> type.show())
-//                .collect(Collectors.joining(", "));
-//
-//        return String.format("(%s)%s", paramsString, returnType.show());
         return "java/lang/Object";
     }
 }

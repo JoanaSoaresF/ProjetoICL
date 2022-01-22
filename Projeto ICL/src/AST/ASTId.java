@@ -26,33 +26,35 @@ public class ASTId implements ASTNode {
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) {
-        /**
-         * aload 4
-         * getfield frame_1/sl Lframe_0;
-         * getfield frame_0/v0 I
-         */
+        c.emit(";Id compile");
+
         Coordinates coords = e.find(id);
         c.emit("aload 4 ");
+
         int depth = coords.getDepth();
-        for (int i = e.depth() - 1; i >= depth; i--) {
-            c.emit(getFieldParent(i));
+        Environment<Coordinates> currentEnv = e;
+        int currentDepth = currentEnv.depth();
+
+        while (currentEnv.hasParent() && currentDepth > depth) {
+            c.emit(getFieldParent(currentEnv));
+            currentEnv = currentEnv.getParent();
+            currentDepth = currentEnv.depth();
         }
-//        if(depth<e.depth())
-//            c.emit(getFieldParent(depth));
+
         IType type = t.find(id);
-        String field = getField(coords, type.show());
+        String field = getField(coords, type.show(), currentEnv);
         c.emit(field);
     }
 
-    private String getFieldParent(int depth) {
-        String frame = String.format(FRAME_NAME, depth + 1);
-        String parent = String.format(FRAME_NAME, depth);
+    private String getFieldParent(Environment<Coordinates> e) {
+        String frame = String.format(FRAME_NAME, e.getFrameId());
+        String parent = String.format(FRAME_NAME, e.getParent().getFrameId());
         return String.format("getfield %s/sl L%s;", frame, parent);
     }
 
-    private String getField(Coordinates coords, String type) {
+    private String getField(Coordinates coords, String type, Environment<Coordinates> e) {
 
-        String frame = String.format(FRAME_NAME, coords.getDepth());
+        String frame = String.format(FRAME_NAME, e.getFrameId());
         String slot = String.format(FIELD_NAME, coords.getSlot());
         String t = type.equals("I") ? "I" : String.format("L%s;", type);
         return String.format("getfield %s/%s %s", frame, slot, t);

@@ -17,6 +17,7 @@ public class ASTRelationOperands implements ASTNode {
 
     private final ASTNode left, right;
     private final Operation operation;
+
     public enum Operation {
         EQUAL("==") {
             @Override

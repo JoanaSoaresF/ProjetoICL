@@ -30,6 +30,7 @@ public class ASTNew implements ASTNode {
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
+        c.emit(";New compile");
         IType v = arg.typecheck(t);
         createRefClassFile(v);
         c.emit(String.format("new ref_%s", v.show()));
@@ -37,14 +38,8 @@ public class ASTNew implements ASTNode {
         c.emit(String.format("invokespecial ref_%s/<init>()V", v.show()));
         c.emit("dup");
         arg.compile(c, e, t);
-        String type = v.show().equals("I")?"I":String.format("L%s;", v.show());
+        String type = v.show().equals("I") ? "I" : String.format("L%s;", v.show());
         c.emit(String.format("putfield ref_%s/v %s", v.show(), type));
-    }
-
-    @Override
-    public IType typecheck(Environment<IType> e) throws TypeErrorException {
-        IType t = arg.typecheck(e);
-        return new TypeRef(t);
     }
 
     private void createRefClassFile(IType t) {
@@ -53,7 +48,7 @@ public class ASTNew implements ASTNode {
         try {
             FileOutputStream fout = new FileOutputStream(String.format("../files/%s.j",
                     classType), false);
-            String type = t.show().equals("I")?t.show():String.format("L%s;", t);
+            String type = t.show().equals("I") ? t.show() : String.format("L%s;", t);
             classFile = new PrintStream(fout);
             classFile.printf(".class public ref_%s%n", t.show());
             classFile.println(".super java/lang/Object");
@@ -68,5 +63,11 @@ public class ASTNew implements ASTNode {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        IType t = arg.typecheck(e);
+        return new TypeRef(t);
     }
 }

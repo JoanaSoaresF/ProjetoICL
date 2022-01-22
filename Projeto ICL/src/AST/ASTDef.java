@@ -48,19 +48,15 @@ public class ASTDef implements ASTNode {
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
 
+        c.emit(";Def compile");
         Environment<Coordinates> newEnv = e.beginScope();
+        newEnv.setFrameId();
         Environment<IType> typesEnv = t.beginScope();
         int slot = 0;
-        PrintStream currentFrame = createFrameFile(newEnv.depth());
-        constructCodeBlock(c, newEnv.depth());
-        System.out.println("Compile def " + bindings.size());
+        PrintStream currentFrame = createFrameFile(newEnv);
+        constructCodeBlock(c, newEnv);
         for (Map.Entry<String, ASTNode> entry : bindings.entrySet()) {
-            /**
-             * aload 4
-             * sipush 2
-             * putfield frame_0/v0 I
-             */
-            String frame = String.format(FRAME_NAME, newEnv.depth());
+            String frame = String.format(FRAME_NAME, newEnv.getFrameId());
             String field = String.format(FIELD_NAME, slot);
             String newID = entry.getKey();
             //To use the associations define previously in the same definition
@@ -73,7 +69,6 @@ public class ASTDef implements ASTNode {
             if (type == null) {
                 type = entry.getValue().typecheck(typesEnv);
             }
-            System.out.println("Def type: " + type);
 
 
             if (type instanceof TypeClosure) {
@@ -99,27 +94,17 @@ public class ASTDef implements ASTNode {
         newEnv.endScope();
         typesEnv.endScope();
         endFrame(currentFrame);
-        /**
-         * aload 4
-         * getfield frame_1/sl Lframe_0;
-         * astore 4
-         */
+
         c.emit("aload 4");
 
-        int depth = newEnv.depth();
-        c.emit(getFieldParent(depth));
+        c.emit(getFieldParent(newEnv));
         c.emit("astore 4");
 
 
     }
 
-    /**
-     * .class f0
-     * .super java/lang/Object
-     * .field public sl Ljava/lang/Object;
-     * .field public x0 I
-     */
-    private PrintStream createFrameFile(int frame) {
+    private PrintStream createFrameFile(Environment<Coordinates> e) {
+        int frame = e.getFrameId();
         String frameName = String.format(FRAME_NAME, frame);
         PrintStream currentFrame = null;
         try {
@@ -130,7 +115,7 @@ public class ASTDef implements ASTNode {
             if (frame == 0) {
                 currentFrame.println(".field public sl Ljava/lang/Object;");
             } else {
-                String parentName = String.format(FRAME_NAME, frame - 1);
+                String parentName = String.format(FRAME_NAME, e.getParent().getFrameId());
                 currentFrame.println(String.format(".field public sl L%s;", parentName));
             }
 
@@ -142,18 +127,10 @@ public class ASTDef implements ASTNode {
 
     }
 
-    /**
-     * new frame_0
-     * dup
-     * invokespecial frame_0/<init>()V
-     * dup
-     * aload 4
-     * putfield frame_0/sl Ljava/lang/Object;
-     * astore 4
-     */
-    private void constructCodeBlock(CodeBlock c, int frameDepth) {
+    private void constructCodeBlock(CodeBlock c, Environment<Coordinates> e) {
+        int frameDepth = e.getFrameId();
         String frame = String.format(FRAME_NAME, frameDepth);
-        String parent = String.format(FRAME_NAME, frameDepth - 1);
+        String parent = String.format(FRAME_NAME, e.getParent().getFrameId());
         c.emit("new " + frame);
         c.emit("dup");
         c.emit(String.format("invokespecial %s/<init>()V", frame));
@@ -183,9 +160,10 @@ public class ASTDef implements ASTNode {
         }
     }
 
-    private String getFieldParent(int frameDepth) {
-        String frame = String.format(FRAME_NAME, frameDepth);
-        String other = (frameDepth != 0) ? String.format(FRAME_NAME, frameDepth - 1) : "java" + "/lang" +
+    private String getFieldParent(Environment<Coordinates> e) {
+        int frameId = e.getFrameId();
+        String frame = String.format(FRAME_NAME, frameId);
+        String other = (frameId != 0) ? String.format(FRAME_NAME, e.getParent().getFrameId()) : "java" + "/lang" +
                 "/Object";
         return String.format("getfield %s/sl L%s;", frame, other);
     }

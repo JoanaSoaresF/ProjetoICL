@@ -24,7 +24,7 @@ public class ASTBoolean implements ASTNode {
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) {
-        if(value)
+        if (value)
             c.emit("sipush 1");
         else
             c.emit("sipush 0");
