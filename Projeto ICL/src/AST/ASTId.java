@@ -44,11 +44,6 @@ public class ASTId implements ASTNode {
         c.emit(field);
     }
 
-    @Override
-    public IType typecheck(Environment<IType> e) throws TypeErrorException {
-        return e.find(id);
-    }
-
     private String getFieldParent(int depth) {
         String frame = String.format(FRAME_NAME, depth + 1);
         String parent = String.format(FRAME_NAME, depth);
@@ -59,7 +54,12 @@ public class ASTId implements ASTNode {
 
         String frame = String.format(FRAME_NAME, coords.getDepth());
         String slot = String.format(FIELD_NAME, coords.getSlot());
-        String t = type.equals("I")?"I":String.format("L%s;", type);
+        String t = type.equals("I") ? "I" : String.format("L%s;", type);
         return String.format("getfield %s/%s %s", frame, slot, t);
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) throws TypeErrorException {
+        return e.find(id);
     }
 }

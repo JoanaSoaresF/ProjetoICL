@@ -21,7 +21,6 @@ public class ASTAssign implements ASTNode {
 
     @Override
     public IValue eval(Environment<IValue> e) throws InterpreterError {
-        //TODO - memória?
         IValue l = left.eval(e);
         if (l instanceof VMemoryCell) {
             IValue r = right.eval(e);

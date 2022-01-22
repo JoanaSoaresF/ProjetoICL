@@ -9,14 +9,18 @@ import java.util.Scanner;
 
 
 public class CodeBlock {
-    LinkedList<String> code;
-    int label;
+
+
+    private LinkedList<String> code;
+    private int label;
+    private int closure;
 
 
     public CodeBlock() {
 
         code = new LinkedList<>();
         label = 0;
+        closure = 0;
     }
 
     public void emit(String opcode) {
@@ -61,10 +65,18 @@ public class CodeBlock {
         return output.toString();
     }
 
-    public String newLabel(){
-        String l = "L"+label;
+    public String newLabel() {
+        String l = "L" + label;
         label++;
         return l;
+    }
+
+    public int newClosure() {
+        return closure++;
+    }
+
+    public LinkedList<String> getCode() {
+        return code;
     }
 
 }

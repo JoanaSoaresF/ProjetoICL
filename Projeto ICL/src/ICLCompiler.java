@@ -17,15 +17,16 @@ public class ICLCompiler {
         FileInputStream input = new FileInputStream(args[0]);
         Parser0 parser = new Parser0(input);
         String[] file = args[0].split("\\.");
-        String filename = file[file.length-2].replace("\\","");
+        String filename = file[file.length - 2].replace("\\", "");
         CodeBlock code = new CodeBlock();
-        Environment<Coordinates>  env = new Environment<>();
+        Environment<Coordinates> env = new Environment<>();
         Environment<IType> envTypes = new Environment<>();
 
         try {
             ASTNode ast = parser.Start();
             ast.typecheck(envTypes);
-            ast.compile(code, env,envTypes);
+            System.out.println("compile:");
+            ast.compile(code, env, envTypes);
             code.dump(filename);
 
 //            String cmd = "java -jar \"..\\..\\jasmin.jar\" "+filename+".j";
@@ -34,7 +35,6 @@ public class ICLCompiler {
 //            pr. waitFor();
 
         } catch (Exception e) {
-            System.out.println("Syntax Error!");
             e.printStackTrace();
         }
 

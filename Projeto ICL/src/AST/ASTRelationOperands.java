@@ -15,6 +15,8 @@ import values.VInteger;
 
 public class ASTRelationOperands implements ASTNode {
 
+    private final ASTNode left, right;
+    private final Operation operation;
     public enum Operation {
         EQUAL("==") {
             @Override
@@ -98,9 +100,6 @@ public class ASTRelationOperands implements ASTNode {
         }
     }
 
-    private final ASTNode left, right;
-    private final Operation operation;
-
     public ASTRelationOperands(ASTNode left, String operation, ASTNode right) {
         this.left = left;
         this.operation = findOperation(operation);
@@ -154,10 +153,9 @@ public class ASTRelationOperands implements ASTNode {
         if (v1 instanceof TypeInt) {
             IType v2 = right.typecheck(e);
             if (v2 instanceof TypeInt) {
-                System.out.println("V2 type" + v2.show());
                 return new TypeBool();
             }
         }
-        throw new TypeErrorException("Illegal arguments to relational operator "+v1.show());
+        throw new TypeErrorException("Illegal arguments to relational operator " + v1.show());
     }
 }

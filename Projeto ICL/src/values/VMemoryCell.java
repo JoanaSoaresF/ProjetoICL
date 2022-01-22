@@ -8,17 +8,16 @@ public class VMemoryCell implements IValue {
         this.v = v;
     }
 
-    //TODO
     @Override
     public void show() {
         System.out.println(v);
     }
 
-    public IValue getValue(){
+    public IValue getValue() {
         return v;
     }
 
-    public void set(IValue v){
+    public void set(IValue v) {
         this.v = v;
     }
 }

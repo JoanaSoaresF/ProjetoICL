@@ -1,4 +1,8 @@
 @echo off
+cd files
+del *.class
+del *.j
+cd ..
 cd src
 call javacc Parser0.jj
 javac Parser0.java

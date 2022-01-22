@@ -10,7 +10,6 @@ public class ICLInterpreter {
 
         while (true) {
             try {
-                //TODO??
                 Environment env = new Environment();
                 System.out.print("> ");
                 AST.ASTNode ast = parser.Start();

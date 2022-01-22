@@ -14,6 +14,16 @@ public class TypeRef implements IType {
         return String.format("ref_%s", value.show());
     }
 
+    @Override
+    public String showType() {
+        return String.format("ref_%s", value.showType());
+    }
+
+    @Override
+    public String loadPrefix() {
+        return "a";
+    }
+
     public IType getType() {
         return value;
     }

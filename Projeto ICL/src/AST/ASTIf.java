@@ -25,7 +25,7 @@ public class ASTIf implements ASTNode {
         if (c instanceof VBoolean) {
             if (((VBoolean) c).getValue()) {
                 return thenBody.eval(e);
-            } else {
+            } else if (elseBody != null) {
                 return elseBody.eval(e);
             }
         }

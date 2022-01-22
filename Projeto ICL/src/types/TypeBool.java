@@ -6,4 +6,14 @@ public class TypeBool implements IType {
         return "I";
 
     }
+
+    @Override
+    public String showType() {
+        return "bool";
+    }
+
+    @Override
+    public String loadPrefix() {
+        return "i";
+    }
 }

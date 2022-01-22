@@ -2,7 +2,7 @@ package values;
 
 public class VBoolean implements IValue {
     boolean v;
-    //TODO
+
     public VBoolean(boolean v) {
         this.v = v;
     }
@@ -12,7 +12,7 @@ public class VBoolean implements IValue {
         System.out.println(v);
     }
 
-    public boolean getValue(){
+    public boolean getValue() {
         return v;
     }
 

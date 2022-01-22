@@ -1,19 +1,8 @@
-javacc Parser0.jj
-javac Parser0.java
-javac ICLInterpreter.java
-java ICLInterpreter
-
-java Parser0
-
-java -jar "C:\jasmin-2.4\jasmin.jar" Main.j
-java Main
-
-
 def x = 2 y= x+2 in def z=3 in def y=x+1 in x+y+z end end end;;
 =8
+
 def x = 2 in def y = def x=x+1 in x+x end in x*y end end;;
 =12
-
 
 def
 x=2
@@ -27,6 +16,7 @@ in
 end;;
 =10
 
+def x = true in if x then 1 else 2 end end;;
 
 def a = new 5 in a := !a + 1; println !a end;;
 =6
@@ -36,3 +26,36 @@ while !x>0 do s := !s + !x ; x := !x - 1 end;
 println !s
 end;;
 =55
+
+
+def
+  f:(int)int = fun x:int -> x+1 end
+in
+  println f(2)+f(3)
+end;;
+=7
+
+def
+  f:(int)int = fun x:int -> if x==0 then 1 else x*f(x-1) end  end
+in
+  println f(3)
+end;;
+=6
+
+
+def
+  f:((int)int)int = fun g:(int)int -> g (10) end
+in
+  def x:int = f(fun y:int -> y*2 end)
+  in
+   println x+2
+  end
+end;;
+=22
+
+def
+    f:(int, int)int = fun x:int, y:int -> x + y end
+in
+    println f(2,3)
+end;;
+=5
