@@ -9,7 +9,7 @@ public class TypeRef implements IType {
 
     @Override
     public String show() {
-        return String.format("ref_%s", value.show());
+        return String.format("ref_%s", value.showType());
     }
 
     @Override

@@ -26,6 +26,7 @@ public class ASTSeq implements ASTNode {
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
         lhs.compile(c, e, t);
+        c.emit("pop");
         rhs.compile(c, e, t);
     }
 

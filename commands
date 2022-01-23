@@ -1,10 +1,10 @@
-def x = 2 y= x+2 in def z=3 in def y=x+1 in x+y+z end end end;;
+println def x = 2 y= x+2 in def z=3 in def y=x+1 in x+y+z end end end;;
 =8
 
-def x = 2 in def y = def x=x+1 in x+x end in x*y end end;;
+println def x = 2 in def y = def x=x+1 in x+x end in x*y end end;;
 =12
 
-def
+println def
 x=2
 y=3
 in
@@ -16,9 +16,9 @@ in
 end;;
 =10
 
-def x = true in if x then 1 else 2 end end;;
+println def x = true in if x then 1 else 2 end end;;
 
-def a = new 5 in a := !a + 1; println !a end;;
+println def a = new 5 in a := !a + 1; println !a end;;
 =6
 
 def x = new 10 s = new 0 in
@@ -59,3 +59,49 @@ in
     println f(2,3)
 end;;
 =5
+
+def
+   m:ref int = new 5666
+in
+  while !m > 1 do
+    if (2*(!m / 2) == !m) then
+     m := !m / 2
+    else
+     m:= 3*!m+1
+    end;
+    println !m
+  end
+end;;
+
+
+
+def
+    glo : ref int = new 0
+in
+    def
+        f : (int)int= fun n:int -> glo := !glo + n end
+    in
+        f(2);
+        f(3);
+        f(4);
+        println !glo
+    end
+end;;
+=9
+
+println def
+    f : (int, int)int = fun n:int, b:int ->
+        def
+            x : ref int = new n
+            s : ref int = new b
+        in
+            while !x > 0 do
+                s := !s + !x; x := !x - 1
+            end;
+            !s
+        end
+    end
+in
+    f(10, 0) + f(100, 20)
+end;;
+=5125

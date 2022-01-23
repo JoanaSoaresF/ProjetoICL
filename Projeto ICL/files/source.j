@@ -21,6 +21,7 @@
 
 aconst_null
 astore 4
+;Def compile
 new f0
 dup
 invokespecial f0/<init>()V
@@ -29,66 +30,42 @@ aload 4
 putfield f0/sl Ljava/lang/Object;
 astore 4
 aload 4
-new ref_I
-dup
-invokespecial ref_I/<init>()V
-dup
-sipush 0
-putfield ref_I/v I
-putfield f0/x0 Lref_I;
-new f1
-dup
-invokespecial f1/<init>()V
-dup
-aload 4
-putfield f1/sl Lf0;
-astore 4
-aload 4
+;Fun compile
 new closure_0
 dup
 invokespecial closure_0/<init>()V
 dup
 aload 4
-putfield closure_0/sl Lf1;
-putfield f1/x0 Ljava/lang/Object;
+putfield closure_0/sl Lf0;
+putfield f0/x0 Ljava/lang/Object;
+;Apply compile
+;Id compile
 aload 4 
-getfield f1/x0 Ljava/lang/Object;
-checkcast closure_interface_int_int
-sipush 2
-invokeinterface closure_interface_int_int/apply(I)I 2
+getfield f0/x0 Ljava/lang/Object;
+checkcast closure_interface_int_int_int
+sipush 10
+sipush 0
+invokeinterface closure_interface_int_int_int/apply(II)I 3
+;Apply compile
+;Id compile
 aload 4 
-getfield f1/x0 Ljava/lang/Object;
-checkcast closure_interface_int_int
-sipush 3
-invokeinterface closure_interface_int_int/apply(I)I 2
-aload 4 
-getfield f1/x0 Ljava/lang/Object;
-checkcast closure_interface_int_int
-sipush 4
-invokeinterface closure_interface_int_int/apply(I)I 2
-aload 4 
-getfield f1/sl Lf0;
-getfield f0/x0 Lref_I;
-getfield ref_I/v I
+getfield f0/x0 Ljava/lang/Object;
+checkcast closure_interface_int_int_int
+sipush 100
+sipush 20
+invokeinterface closure_interface_int_int_int/apply(II)I 3
+iadd
+aload 4
+getfield f0/sl Ljava/lang/Object;
+astore 4
 dup
 getstatic java/lang/System/out Ljava/io/PrintStream;
 swap
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
 invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-aload 4
-getfield f1/sl Lf0;
-astore 4
-aload 4
-getfield f0/sl Ljava/lang/Object;
-astore 4
   ; END
 
-       ; convert to String;
-       ;getstatic java/lang/System/out Ljava/io/PrintStream;
-       ;swap
-      ;invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
-       ; call println
-       ;invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
        return
 .end method
 

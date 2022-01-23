@@ -62,7 +62,6 @@ public class ASTDef implements ASTNode {
             //To use the associations define previously in the same definition
             c.emit("aload 4");
             //add coordinates to env
-            System.out.println("Novo id: " + newID);
             Coordinates coords = new Coordinates(newEnv.depth(), slot);
             //add types to env
             IType type = types.get(entry.getKey());

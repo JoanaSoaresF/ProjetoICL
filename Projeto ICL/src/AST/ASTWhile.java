@@ -44,9 +44,10 @@ public class ASTWhile implements ASTNode {
         condition.compile(c, e, t);
         c.emit(String.format("ifeq %s", l2));
         body.compile(c, e, t);
-        //c.emit("pop");
+        c.emit("pop");
         c.emit(String.format("goto %s", l1));
         c.emit(String.format("%s:", l2));
+        c.emit("iconst_0");
 
     }
 

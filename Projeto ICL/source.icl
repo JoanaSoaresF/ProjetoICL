@@ -1,9 +1,15 @@
-def glo = new 0
-    in def f = fun n:int -> glo := !glo + n end
+println def
+    f : (int, int)int = fun n:int, b:int ->
+        def
+            x : ref int = new n
+            s : ref int = new b
         in
-            f(2);
-            f(3);
-            f(4);
-            println !glo
+            while !x > 0 do
+                s := !s + !x; x := !x - 1
+            end;
+            !s
         end
+    end
+in
+    f(10, 0) + f(100, 20)
 end;;

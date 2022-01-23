@@ -35,8 +35,10 @@ public class ASTAssign implements ASTNode {
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
         c.emit(";Assign compile");
         IType type = left.typecheck(envTypes);
-        left.compile(c, e, envTypes);
         right.compile(c, e, envTypes);
+        c.emit("dup");
+        left.compile(c, e, envTypes);
+        c.emit("swap");
         String typeInRef = ((TypeRef) type).getType().show();
         String t = typeInRef.equals("I") ? "I" : String.format("L%s;", typeInRef);
         c.emit(String.format("putfield %s/v %s", type.show(), t));

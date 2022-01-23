@@ -33,24 +33,24 @@ public class ASTNew implements ASTNode {
         c.emit(";New compile");
         IType v = arg.typecheck(t);
         createRefClassFile(v);
-        c.emit(String.format("new ref_%s", v.show()));
+        c.emit(String.format("new ref_%s", v.showType()));
         c.emit("dup");
-        c.emit(String.format("invokespecial ref_%s/<init>()V", v.show()));
+        c.emit(String.format("invokespecial ref_%s/<init>()V", v.showType()));
         c.emit("dup");
         arg.compile(c, e, t);
-        String type = v.show().equals("I") ? "I" : String.format("L%s;", v.show());
-        c.emit(String.format("putfield ref_%s/v %s", v.show(), type));
+        String type = v.show().equals("I") ? "I" : String.format("L%s;", v.showType());
+        c.emit(String.format("putfield ref_%s/v %s", v.showType(), type));
     }
 
     private void createRefClassFile(IType t) {
-        String classType = String.format("ref_%s", t.show());
+        String classType = String.format("ref_%s", t.showType());
         PrintStream classFile;
         try {
             FileOutputStream fout = new FileOutputStream(String.format("../files/%s.j",
                     classType), false);
             String type = t.show().equals("I") ? t.show() : String.format("L%s;", t);
             classFile = new PrintStream(fout);
-            classFile.printf(".class public ref_%s%n", t.show());
+            classFile.printf(".class public ref_%s%n", t.showType());
             classFile.println(".super java/lang/Object");
             classFile.printf(".field public v %s%n", type);
             classFile.println(".method public <init>()V");
