@@ -46,7 +46,7 @@ public class ASTNew implements ASTNode {
         String classType = String.format("ref_%s", t.showType());
         PrintStream classFile;
         try {
-            FileOutputStream fout = new FileOutputStream(String.format("generated_files/%s.j",
+            FileOutputStream fout = new FileOutputStream(String.format("..\\generated_files/%s.j",
                     classType), false);
             String type = t.show().equals("I") ? t.show() : String.format("L%s;", t);
             classFile = new PrintStream(fout);
