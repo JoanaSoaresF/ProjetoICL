@@ -201,13 +201,14 @@ ASTNode Fact() :
    | tok = <DEF> { Token n;
                    Map<String, ASTNode> inits = new HashMap<String, ASTNode>();
                    Map<String, IType> typesDef = new HashMap<String, IType>();
+                   List<String> ids = new LinkedList<String>();
                    ASTNode t;}
                 (n=<Id> (<DOTS> type = Type() {typesDef.put(n.image, type);})?
-                <EQ_DEF> e = BoolAdd() {inits.put(n.image, e);}
+                <EQ_DEF> e = BoolAdd() {inits.put(n.image, e); ids.add(n.image);}
                 )+
             <IN>
                 t = Seq()
-            <END> {t1 = new ASTDef(t, inits, typesDef);}
+            <END> {t1 = new ASTDef(t, inits, typesDef, ids);}
    | tok = <IF> t1 = BoolAdd() <THEN> t2 = Seq() (<ELSE> t3=Seq())? <END>
             {t1 =  new ASTIf(t1, t2, t3);}
    | tok = <WHILE> t1 = BoolAdd() <DO> t2=Seq() <END>

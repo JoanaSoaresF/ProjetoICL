@@ -13,6 +13,7 @@ import values.IValue;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Map;
 
 public class ASTDef implements ASTNode {
@@ -22,11 +23,15 @@ public class ASTDef implements ASTNode {
     ASTNode body;
     Map<String, ASTNode> bindings; //Strings to expressions
     Map<String, IType> types;
+    // Necessary to maintain the order of definitions, the map produces a different order and can
+    // lead to errors
+    List<String> ids;
 
-    public ASTDef(ASTNode body, Map<String, ASTNode> init, Map<String, IType> types) {
+    public ASTDef(ASTNode body, Map<String, ASTNode> init, Map<String, IType> types, List<String> ids) {
         this.body = body;
         this.bindings = init;
         this.types = types;
+        this.ids = ids;
 
     }
 
@@ -55,31 +60,31 @@ public class ASTDef implements ASTNode {
         int slot = 0;
         PrintStream currentFrame = createFrameFile(newEnv);
         constructCodeBlock(c, newEnv);
-        for (Map.Entry<String, ASTNode> entry : bindings.entrySet()) {
+        for (String id : ids) {
             String frame = String.format(FRAME_NAME, newEnv.getFrameId());
             String field = String.format(FIELD_NAME, slot);
-            String newID = entry.getKey();
+//            String newID = entry.getKey();
             //To use the associations define previously in the same definition
             c.emit("aload 4");
             //add coordinates to env
             Coordinates coords = new Coordinates(newEnv.depth(), slot);
             //add types to env
-            IType type = types.get(entry.getKey());
+            IType type = types.get(id);
             if (type == null) {
-                type = entry.getValue().typecheck(typesEnv);
+                type = bindings.get(id).typecheck(typesEnv);
             }
 
 
             if (type instanceof TypeClosure) {
-                newEnv.assoc(newID, coords);
-                typesEnv.assoc(newID, type);
-
-                entry.getValue().compile(c, newEnv, typesEnv);
+                //to allow recursive functions
+                newEnv.assoc(id, coords);
+                typesEnv.assoc(id, type);
+                bindings.get(id).compile(c, newEnv, typesEnv);
             } else {
 
-                entry.getValue().compile(c, newEnv, typesEnv);
-                newEnv.assoc(newID, coords);
-                typesEnv.assoc(newID, type);
+                bindings.get(id).compile(c, newEnv, typesEnv);
+                newEnv.assoc(id, coords);
+                typesEnv.assoc(id, type);
 
             }
 

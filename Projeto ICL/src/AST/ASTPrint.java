@@ -34,8 +34,6 @@ public class ASTPrint implements ASTNode {
 
     @Override
     public IType typecheck(Environment<IType> e) throws TypeErrorException {
-        arg.typecheck(e);
-
-        return null;
+        return arg.typecheck(e);
     }
 }
