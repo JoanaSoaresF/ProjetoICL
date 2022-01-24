@@ -112,7 +112,7 @@ public class ASTDef implements ASTNode {
         String frameName = String.format(FRAME_NAME, frame);
         PrintStream currentFrame = null;
         try {
-            FileOutputStream fout = new FileOutputStream(String.format("..\\generated_files\\%s.j",
+            FileOutputStream fout = new FileOutputStream(String.format("../generated_files/%s.j",
                     frameName), false);
             currentFrame = new PrintStream(fout);
             currentFrame.println(".class " + frameName);

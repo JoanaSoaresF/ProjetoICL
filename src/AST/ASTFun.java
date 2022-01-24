@@ -69,7 +69,8 @@ public class ASTFun implements ASTNode {
         PrintStream interfaceFile = null;
         String interfaceName = functionType.getInterfaceName();
         try {
-            FileOutputStream fout = new FileOutputStream(String.format("..\\generated_files\\%s.j", interfaceName), false);
+            FileOutputStream fout = new FileOutputStream(String.format("../generated_files/%s.j"
+                    , interfaceName), false);
             interfaceFile = new PrintStream(fout);
             interfaceFile.println(".interface public " + interfaceName);
             interfaceFile.println(".super java/lang/Object");
@@ -85,7 +86,7 @@ public class ASTFun implements ASTNode {
     private void createFunctionFrame(String frameName, String currentFrame) {
         PrintStream functionFrameFile = null;
         try {
-            FileOutputStream fout = new FileOutputStream(String.format("..\\generated_files\\%s.j",
+            FileOutputStream fout = new FileOutputStream(String.format("../generated_files/%s.j",
                     frameName), false);
             functionFrameFile = new PrintStream(fout);
             functionFrameFile.println(".class " + frameName);
@@ -118,7 +119,7 @@ public class ASTFun implements ASTNode {
         PrintStream closureFile = null;
         int locals = Math.max(5, parametersNames.size() + 2);
         try {
-            FileOutputStream fout = new FileOutputStream(String.format("..\\generated_files\\%s.j",
+            FileOutputStream fout = new FileOutputStream(String.format("../generated_files/%s.j",
                     closureName), false);
             closureFile = new PrintStream(fout);
             closureFile.println(".class " + closureName);

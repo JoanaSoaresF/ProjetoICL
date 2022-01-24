@@ -27,7 +27,7 @@ public class CodeBlock {
 
     public void dump(String filename) {
         try {
-            FileOutputStream fout = new FileOutputStream(String.format("..\\generated_files/%s.j",
+            FileOutputStream fout = new FileOutputStream(String.format("../generated_files/%s.j",
                     filename), false);
             PrintStream f = new PrintStream(fout);
             start(f);
