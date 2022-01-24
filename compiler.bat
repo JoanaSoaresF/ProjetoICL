@@ -1,5 +1,5 @@
 @echo off
-cd files
+cd generated_files
 del *.class
 del *.j
 cd ..
@@ -8,7 +8,7 @@ call javacc Parser0.jj
 javac Parser0.java
 javac ICLCompiler.java
 java ICLCompiler ..\source.icl
-cd ../files
-java -jar "C:\jasmin-2.4\jasmin.jar" *.j
+cd ../generated_files
+java -jar "..\jasmin.jar" *.j
 java Main
 @PAUSE
