@@ -37,7 +37,8 @@ TOKEN :{
     |  <ELSE : "else">
     |  <WHILE : "while">
     |  <DO : "do">
-    |  <PRINT : "println">
+    |  <PRINT : "print">
+    |  <PRINTLN : "println">
     |  <TRUE : "true">
     |  <FALSE : "false">
     |  <AND : "&&">
@@ -213,8 +214,10 @@ ASTNode Fact() :
             {t1 =  new ASTIf(t1, t2, t3);}
    | tok = <WHILE> t1 = BoolAdd() <DO> t2=Seq() <END>
             {t1 =  new ASTWhile(t1, t2);}
+   | tok = <PRINTLN> t1 = BoolRel()
+             {t1 =  new ASTPrint(t1, true);}
    | tok = <PRINT> t1 = BoolRel()
-             {t1 =  new ASTPrint(t1);}
+            {t1 =  new ASTPrint(t1, false);}
    | tok = <NEW> t1 = Fact()
             {t1 =  new ASTNew(t1);}
    | tok = <FUN> { Token nFun;

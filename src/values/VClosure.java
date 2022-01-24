@@ -19,8 +19,7 @@ public class VClosure implements IValue {
 
     @Override
     public void show() {
-        //TODO
-
+        System.out.print("function");
     }
 
 

@@ -10,15 +10,20 @@ import values.IValue;
 
 public class ASTPrint implements ASTNode {
     ASTNode arg;
+    boolean isPrintLn;
 
-    public ASTPrint(ASTNode arg) {
+    public ASTPrint(ASTNode arg, boolean isPrintLn) {
         this.arg = arg;
+        this.isPrintLn = isPrintLn;
     }
 
     @Override
     public IValue eval(Environment<IValue> e) throws InterpreterError {
         IValue v = arg.eval(e);
         v.show();
+        if (isPrintLn) {
+            System.out.println();
+        }
         return v;
     }
 
@@ -29,7 +34,12 @@ public class ASTPrint implements ASTNode {
         c.emit("getstatic java/lang/System/out Ljava/io/PrintStream;");
         c.emit("swap");
         c.emit("invokestatic java/lang/String/valueOf(I)Ljava/lang/String;");
-        c.emit("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+        if (isPrintLn) {
+            c.emit("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+        } else {
+            c.emit("invokevirtual java/io/PrintStream/print(Ljava/lang/String;)V");
+        }
+
     }
 
     @Override

@@ -9,7 +9,7 @@ public class VInteger implements IValue {
 
     @Override
     public void show() {
-        System.out.println(v);
+        System.out.print(v);
     }
 
     public int getValue() {
