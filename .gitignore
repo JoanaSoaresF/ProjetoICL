@@ -21,11 +21,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/Projeto ICL/src/ParseException.java
-/Projeto ICL/src/Parser0.java
-/Projeto ICL/src/Parser0Constants.java
-/Projeto ICL/src/Parser0TokenManager.java
-/Projeto ICL/src/SimpleCharStream.java
-/Projeto ICL/src/Token.java
-/Projeto ICL/src/TokenMgrError.java
+/src/ParseException.java
+/src/Parser0.java
+/src/Parser0Constants.java
+/src/Parser0TokenManager.java
+/src/SimpleCharStream.java
+/src/Token.java
+/src/TokenMgrError.java
 /out
