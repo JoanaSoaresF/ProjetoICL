@@ -35,7 +35,7 @@ public class ASTWhile implements ASTNode {
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
-        c.emit(";While compile");
+        c.emit(";-----While compile-----");
 
         String l1 = c.newLabel();
         String l2 = c.newLabel();

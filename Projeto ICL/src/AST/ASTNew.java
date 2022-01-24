@@ -30,7 +30,7 @@ public class ASTNew implements ASTNode {
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
-        c.emit(";New compile");
+        c.emit(";-----New compile-----");
         IType v = arg.typecheck(t);
         createRefClassFile(v);
         c.emit(String.format("new ref_%s", v.showType()));

@@ -33,7 +33,7 @@ public class ASTAssign implements ASTNode {
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
-        c.emit(";Assign compile");
+        c.emit(";-----Assign compile-----");
         IType type = left.typecheck(envTypes);
         right.compile(c, e, envTypes);
         c.emit("dup");

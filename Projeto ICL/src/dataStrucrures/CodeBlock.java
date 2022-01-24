@@ -1,11 +1,9 @@
 package dataStrucrures;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 
 public class CodeBlock {
@@ -32,13 +30,11 @@ public class CodeBlock {
             FileOutputStream fout = new FileOutputStream(String.format("../files/%s.j",
                     filename), false);
             PrintStream f = new PrintStream(fout);
-            f.println(readFile("../../start"));
-            f.println("aconst_null");
-            f.println("astore 4");
+            start(f);
             for (String instruction : code) {
-                f.println(instruction);
+                f.println("\t" + instruction);
             }
-            f.println(readFile("../../end"));
+            end(f);
             f.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -46,21 +42,27 @@ public class CodeBlock {
 
     }
 
-    private String readFile(String file) {
-        StringBuilder output = new StringBuilder();
-        try {
-            File myObj = new File(file);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                output.append(data).append("\n");
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred generating file.");
-            e.printStackTrace();
-        }
-        return output.toString();
+    private void start(PrintStream f) {
+        f.println(".class public Main");
+        f.println(".super java/lang/Object");
+        f.println(".method public <init>()V");
+        f.println("\taload_0");
+        f.println("\tinvokenonvirtual java/lang/Object/<init>()V");
+        f.println("\treturn");
+        f.println(".end method");
+        f.println(".method public static main([Ljava/lang/String;)V");
+        f.println("\t;set limits used by this method");
+        f.println("\t.limit locals 10");
+        f.println("\t.limit stack 256");
+        f.println("\taconst_null");
+        f.println("\tastore 4");
+        f.println("\t;START");
+    }
+
+    private void end(PrintStream f) {
+        f.println("\t; END");
+        f.println("\treturn");
+        f.println(".end method");
     }
 
     public String newLabel() {

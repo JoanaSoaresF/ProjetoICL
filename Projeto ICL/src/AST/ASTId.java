@@ -26,7 +26,7 @@ public class ASTId implements ASTNode {
 
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) {
-        c.emit(";Id compile");
+        c.emit(";-----Id compile-----");
 
         Coordinates coords = e.find(id);
         c.emit("aload 4 ");

@@ -37,7 +37,7 @@ public class ASTFun implements ASTNode {
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> envTypes) throws TypeErrorException {
 
-        c.emit(";Fun compile");
+        c.emit(";-----Fun compile-----");
         int nClosure = c.newClosure();
         String functionName = "closure_" + nClosure;
         String currentEnvironment = "f" + e.getFrameId();

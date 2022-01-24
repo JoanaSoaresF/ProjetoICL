@@ -24,16 +24,16 @@
 	iload 2
 	putfield f1/x1 I
 	astore 4
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f1/x0 I
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f1/x1 I
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f1/x0 I
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f1/x1 I
 	idiv

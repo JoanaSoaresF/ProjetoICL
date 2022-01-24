@@ -53,7 +53,7 @@ public class ASTDef implements ASTNode {
     @Override
     public void compile(CodeBlock c, Environment<Coordinates> e, Environment<IType> t) throws TypeErrorException {
 
-        c.emit(";Def compile");
+        c.emit(";-----Def compile-----");
         Environment<Coordinates> newEnv = e.beginScope();
         newEnv.setFrameId();
         Environment<IType> typesEnv = t.beginScope();

@@ -14,7 +14,7 @@ public class ICLInterpreter {
                 System.out.print("> ");
                 AST.ASTNode ast = parser.Start();
                 IValue v = ast.eval(env);
-                v.show();
+//                v.show();
             } catch (Exception e) {
                 System.out.println("Syntax Error!");
                 e.printStackTrace();

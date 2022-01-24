@@ -24,17 +24,17 @@
 	iload 2
 	putfield f3/x1 I
 	astore 4
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f3/x0 I
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f3/x0 I
 	imul
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f3/x1 I
-	;Id compile
+	;-----Id compile-----
 	aload 4 
 	getfield f3/x1 I
 	imul
