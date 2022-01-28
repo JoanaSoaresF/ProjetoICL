@@ -7,8 +7,9 @@ cd src
 call javacc Parser0.jj
 javac Parser0.java
 javac ICLCompiler.java
-java ICLCompiler ..\source.icl
+java ICLCompiler ..\\%1
 cd ../generated_files
 java -jar "..\jasmin.jar" *.j
 java Main
+
 @PAUSE

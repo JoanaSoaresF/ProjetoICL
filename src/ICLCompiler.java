@@ -16,8 +16,7 @@ public class ICLCompiler {
     public static void main(String args[]) throws FileNotFoundException {
         FileInputStream input = new FileInputStream(args[0]);
         Parser0 parser = new Parser0(input);
-        String[] file = args[0].split("\\.");
-        String filename = file[file.length - 2].replace("\\", "");
+        String filename = "Main";
         CodeBlock code = new CodeBlock();
         Environment<Coordinates> env = new Environment<>();
         Environment<IType> envTypes = new Environment<>();
