@@ -14,10 +14,10 @@ prompt `>`, a expressão a interpretar deve ser introduzida. <p>
 Para correr o **compilador** primeiro deve-se ter um ficheiro `.icl` com a expressão a compilar e de
 seguida executar o ficheiro bat `compiler.bat`, em windows, ou correr o script `compiler.sh`, em
 linux, que recebem como argumento o caminho do ficheiro anteriormente referido a partir da pasta
-principal, por exemplo:<p>
-`./compiler.bat ./examples/ex1.icl` <p>
+raiz, por exemplo:<p>
+`compiler.bat ./examples/ex1.icl`, em cmd, ou, `./compiler.bat ./examples/ex1.icl` na PowerShell<p>
 ou <p>
-`sh compiler.sh ./examples/ex1.icl` <p>
+`sh compiler.sh ./examples/ex1.icl`, em linux <p>
 Os ficheiros gerados com o código JVM poderão ser encontrados na pasta `generated_files`. Nesta
 pasta já se encontra o código gerado pelo exemplo 14, expressão fornecida nas aulas teóricas.<p>
 A seguir apresentam-se uma série de expressões utilizadas para testar o projeto. Estes exemplos
